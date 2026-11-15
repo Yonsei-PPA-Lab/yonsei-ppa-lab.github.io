@@ -40,6 +40,7 @@ const members = defineCollection({
   schema: z.object({
     name: z.string(),
     role: z.string(),
+    study: z.array(z.object({ label: z.string(), href: z.string().startsWith('/') })).default([]),
     interests: z.array(z.string()).default([]),
     since: z.string().optional(), // "2026-2"
     github: z.string().optional(),

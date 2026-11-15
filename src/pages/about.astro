@@ -6,6 +6,8 @@ const about = await getEntry('pages', 'about');
 if (!about) throw new Error('src/content/pages/about.md is missing');
 const { Content } = await render(about);
 const members = await getCollection('members');
+const hasInterests = members.some((m) => m.data.interests.length > 0);
+const hasSince = members.some((m) => m.data.since);
 ---
 <Base title={about.data.title} description={about.data.description}>
   <div class="wrap">
@@ -26,9 +28,10 @@ const members = await getCollection('members');
   <section class="sec members" id="members">
     <div class="wrap">
       <div class="sec-head"><h2>Members</h2></div>
+      <p class="member-caption">봄 스터디에서 제출한 주차와 해당 학습 노트를 연결했습니다.</p>
       <div class="tbl-wrap">
         <table class="reg">
-          <thead><tr><th>Name</th><th>Role</th><th>Interest</th><th>Since</th></tr></thead>
+          <thead><tr><th scope="col">Name</th><th scope="col">Role</th><th scope="col">Study archive</th>{hasInterests && <th scope="col">Interest</th>}{hasSince && <th scope="col">Since</th>}</tr></thead>
           <tbody>
             {members.map((m) => (
               <tr>
@@ -36,8 +39,13 @@ const members = await getCollection('members');
                   {m.data.github ? <a href={`https://github.com/${m.data.github}`}>{m.data.name}</a> : m.data.name}
                 </td>
                 <td>{m.data.role}</td>
-                <td><div class="tags">{m.data.interests.map((i) => <span class="tag">{i}</span>)}</div></td>
-                <td class="num">{m.data.since ?? '–'}</td>
+                <td>
+                  {m.data.study.length > 0 ? (
+                    <ul class="study-links">{m.data.study.map((entry) => <li><a href={entry.href}>{entry.label}</a></li>)}</ul>
+                  ) : '–'}
+                </td>
+                {hasInterests && <td><div class="tags">{m.data.interests.map((i) => <span class="tag">{i}</span>)}</div></td>}
+                {hasSince && <td class="num">{m.data.since ?? '–'}</td>}
               </tr>
             ))}
           </tbody>
@@ -54,6 +62,8 @@ const members = await getCollection('members');
   .logo { margin: 0; padding: 28px 24px 24px; max-width: 320px; }
   .logo img { display: block; width: 100%; height: auto; }
   .members { margin-top: var(--s-8); }
-  table { min-width: 460px; }
+  .member-caption { font-size: var(--fs-small); color: var(--muted); margin: 0 0 var(--s-5); }
+  .study-links { display: flex; flex-wrap: wrap; gap: 8px 20px; list-style: none; margin: 0; padding: 0; }
+  .study-links li { margin: 0; }
   .name { font-weight: 500; white-space: nowrap; }
 </style>

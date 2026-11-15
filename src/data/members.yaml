@@ -3,24 +3,58 @@
 #   interests: [RTL, Arch]   관심 분야
 #   since: "2026-1"          합류 학기
 #   github: 깃허브-아이디      이름에 프로필 링크
+# study는 제출 기록으로 확인한 작업과 관련 설명 글을 연결합니다.
+# 제출 기록으로 관심 분야나 합류 시기를 추정하지 않습니다.
 - id: tak-hyobin
   name: 탁효빈
   role: 운영
+  study:
+    - { label: "1주차 · 행렬곱", href: /notes/matrix-multiplier-designs/ }
+    - { label: "2·3주차 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "4주차 · 결과 저장", href: /notes/systolic-result-harvesting/ }
+    - { label: "5주차 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: kong-minseok
   name: 공민석
   role: 멤버
+  study:
+    - { label: "2·3주차 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
 - id: kim-yonghyeon
   name: 김용현
   role: 멤버
+  study:
+    - { label: "1주차 · 행렬곱", href: /notes/matrix-multiplier-designs/ }
+    - { label: "2·3주차 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "4주차 · 결과 저장", href: /notes/systolic-result-harvesting/ }
+    - { label: "5주차 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: kim-jinmok
   name: 김진목
   role: 멤버
+  study:
+    - { label: "1주차 · 행렬곱", href: /notes/matrix-multiplier-designs/ }
+    - { label: "2·3주차 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "4주차 · 결과 저장", href: /notes/systolic-result-harvesting/ }
+    - { label: "5주차 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: kim-hamin
   name: 김하민
   role: 멤버
+  study:
+    - { label: "1주차 · 행렬곱", href: /notes/matrix-multiplier-designs/ }
+    - { label: "2·3주차 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "4주차 · 결과 저장", href: /notes/systolic-result-harvesting/ }
+    - { label: "5주차 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: moon-beomyong
   name: 문범용
   role: 멤버
+  study:
+    - { label: "1주차 · 행렬곱", href: /notes/matrix-multiplier-designs/ }
+    - { label: "2·3주차 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "4주차 · 결과 저장", href: /notes/systolic-result-harvesting/ }
+    - { label: "5주차 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: danilo
   name: Danilo
   role: 멤버
+  study:
+    - { label: "1주차 · 행렬곱", href: /notes/matrix-multiplier-designs/ }
+    - { label: "2·3주차 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "4주차 · 결과 저장", href: /notes/systolic-result-harvesting/ }
+    - { label: "5주차 · BRAM", href: /notes/bram-fed-systolic-array/ }
