@@ -27,6 +27,7 @@ date: 2026-11-15
 tags: [RTL, Verification]
 author: 이름          # 선택
 summary: 한 줄 요약   # 선택
+order: 1              # 선택, 날짜가 같은 글끼리는 작은 숫자가 위에 표시
 ---
 
 본문은 Markdown으로 씁니다.

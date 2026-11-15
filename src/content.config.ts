@@ -27,6 +27,7 @@ const notes = defineCollection({
     tags: z.array(z.string()).default([]),
     author: z.string().optional(),
     summary: z.string().optional(),
+    order: z.number().default(100), // tie-break for notes with the same date: smaller comes first
   }),
 });
 

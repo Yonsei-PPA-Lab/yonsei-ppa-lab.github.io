@@ -11,7 +11,9 @@ export async function getProjects() {
   );
 }
 
-/** Notes, newest first. */
+/** Notes, newest first. Notes with the same date keep their reading order (`order`, smaller first). */
 export async function getNotes() {
-  return (await getCollection('notes')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return (await getCollection('notes')).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.order - b.data.order,
+  );
 }

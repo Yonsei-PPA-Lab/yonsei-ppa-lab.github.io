@@ -4,6 +4,7 @@ date: 2026-11-15
 tags: [Arch, RTL]
 author: PPA Lab
 summary: 4×4 weight-stationary systolic array에서 활성값과 부분합이 움직이는 순서를 사이클 단위로 따라가 봅니다.
+order: 2
 ---
 
 홈 화면에 있는 4×4 어레이 그림에서 노란 칸이 대각선으로 지나가는 이유를 정리한 글입니다.

@@ -11,12 +11,17 @@ type Member = (typeof members)[number];
 function activityDate(value?: string) {
   if (!value) return '–';
   if (/^\d{4}-\d{2}$/.test(value)) return value.replace('-', '.');
-  return value.replace(/^(\d{4})-(\d)학기$/, '$1년 $2학기');
+  return value.replace(/^(\d{4})-(\d)학기$/, '$1.$2학기');
 }
 
 function activityPeriod(member: Member) {
   return activityDate(member.data.since) + ' ~ ' +
     (member.data.until ? activityDate(member.data.until) : member.data.status === 'active' ? '현재' : '–');
+}
+
+/** "과제 3 · 결과 저장" -> "3". Falls back to the whole label. */
+function studyNumber(label: string) {
+  return label.match(/과제\s*(\d+)/)?.[1] ?? label;
 }
 
 const groups = [
@@ -28,7 +33,7 @@ const groups = [
   },
   {
     id: 'past-members',
-    title: '이전 멤버',
+    title: 'Former members',
     description: '함께한 활동과 제출 기록을 남깁니다.',
     entries: members.filter((m) => m.data.status === 'former'),
   },
@@ -50,7 +55,7 @@ const groups = [
     </div>
   </div>
 
-  {groups.filter((group) => group.entries.length > 0).map((group) => (
+  {groups.filter((group) => group.entries.length > 0).map((group, index) => (
     <section class="sec members" id={group.id}>
       <div class="wrap">
         <div class="sec-head"><h2>{group.title}</h2></div>
@@ -58,7 +63,7 @@ const groups = [
         <div class="tbl-wrap">
           <table class="reg member-table">
             <thead>
-              <tr><th scope="col">Name</th><th scope="col">역할</th><th scope="col">활동 기간</th><th scope="col">Study archive</th></tr>
+              <tr><th scope="col">이름</th><th scope="col">역할</th><th scope="col">활동 기간</th><th scope="col">제출 과제</th></tr>
             </thead>
             <tbody>
               {group.entries.map((m) => (
@@ -70,7 +75,9 @@ const groups = [
                   <td class="activity-period mono">{activityPeriod(m)}</td>
                   <td class="archive">
                     {m.data.study.length > 0 ? (
-                      <ul class="study-links">{m.data.study.map((entry) => <li><a href={entry.href}>{entry.label}</a></li>)}</ul>
+                      <ul class="study-links">{m.data.study.map((entry) => (
+                        <li><a href={entry.href} title={entry.label} aria-label={entry.label}>{studyNumber(entry.label)}</a></li>
+                      ))}</ul>
                     ) : '–'}
                   </td>
                 </tr>
@@ -78,6 +85,9 @@ const groups = [
             </tbody>
           </table>
         </div>
+        {index === 0 && group.entries.some((m) => m.data.study.length > 0) && (
+          <p class="member-note">제출 과제의 숫자는 봄 스터디 과제 번호입니다. 누르면 그 과제를 정리한 글로 이동합니다.</p>
+        )}
       </div>
     </section>
   ))}
@@ -88,14 +98,22 @@ const groups = [
   .intro > * { min-width: 0; }
   @media (min-width: 960px) { .intro { grid-template-columns: minmax(0, 1fr) 320px; gap: var(--s-8); } }
   .logo { margin: 0; padding: 28px 24px 24px; max-width: 320px; }
+  @media (max-width: 959px) { .logo { order: -1; max-width: 220px; padding: 24px 20px 20px; } }
   .logo img { display: block; width: 100%; height: auto; }
   .members { margin-top: var(--s-8); }
   .member-caption { font-size: var(--fs-small); color: var(--muted); margin: 0 0 var(--s-5); max-width: var(--measure); }
   .name { font-weight: 600; white-space: nowrap; }
   .member-role { white-space: nowrap; }
-  .activity-period { min-width: 130px; font-size: 13px; color: var(--ink-2); }
-  .study-links { display: flex; flex-wrap: wrap; gap: 8px 16px; list-style: none; margin: 0; padding: 0; min-width: 160px; }
+  .activity-period { min-width: 130px; font-size: 13px; color: var(--ink-2); white-space: nowrap; }
+  .member-note { font-size: var(--fs-small); color: var(--muted); margin: var(--s-4) 0 0; max-width: var(--measure); }
+  .study-links { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: -5px 0; padding: 0; }
   .study-links li { margin: 0; }
+  .study-links a {
+    display: grid; place-items: center; min-width: 32px; height: 32px; padding: 0 8px;
+    border: 1px solid var(--line); border-radius: var(--radius-chip);
+    font: 500 13px var(--font-mono); font-variant-numeric: tabular-nums; text-decoration: none;
+  }
+  .study-links a:hover { background: var(--signal); color: var(--on-signal); border-color: var(--line-strong); }
 
   @media (max-width: 719px) {
     .member-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
@@ -111,6 +129,7 @@ const groups = [
     .member-role { grid-area: role; }
     .activity-period { grid-area: period; text-align: right; max-width: 170px; align-self: center; }
     .archive { grid-area: archive; padding-top: 2px !important; }
-    .study-links { min-width: 0; gap: 8px 16px; font-size: 14px; }
+    .study-links { margin: 0; gap: 8px; }
+    .study-links a { min-width: 40px; height: 40px; }
   }
 </style>

@@ -6,6 +6,7 @@
 #   status: former           이전 멤버 (기본값 active)
 #   github: 깃허브-아이디      이름에 프로필 링크
 # study는 제출 기록으로 확인한 작업과 관련 설명 글을 연결합니다.
+# 표에는 label의 과제 번호만 보이고, 전체 label은 링크 설명으로 쓰입니다.
 # 제출 기록으로 관심 분야나 합류 시기를 추정하지 않습니다.
 - id: tak-hyobin
   name: 탁효빈
@@ -14,7 +15,7 @@
   order: 0
   study:
     - { label: "과제 1 · 행렬곱", href: /notes/matrix-multiplier-designs/ }
-    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#assignment-2 }
     - { label: "과제 3 · 결과 저장", href: /notes/systolic-result-harvesting/ }
     - { label: "과제 5 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: kong-minseok
@@ -23,7 +24,7 @@
   since: "2026-03"
   order: 40
   study:
-    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#assignment-2 }
 - id: kim-yonghyeon
   name: 김용현
   role: 팀원
@@ -31,7 +32,7 @@
   order: 30
   study:
     - { label: "과제 1 · 행렬곱", href: /notes/matrix-multiplier-designs/ }
-    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#assignment-2 }
     - { label: "과제 3 · 결과 저장", href: /notes/systolic-result-harvesting/ }
     - { label: "과제 5 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: kim-jinmok
@@ -41,7 +42,7 @@
   order: 20
   study:
     - { label: "과제 1 · 행렬곱", href: /notes/matrix-multiplier-designs/ }
-    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#assignment-2 }
     - { label: "과제 3 · 결과 저장", href: /notes/systolic-result-harvesting/ }
     - { label: "과제 5 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: kim-hamin
@@ -51,7 +52,7 @@
   order: 10
   study:
     - { label: "과제 1 · 행렬곱", href: /notes/matrix-multiplier-designs/ }
-    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#assignment-2 }
     - { label: "과제 3 · 결과 저장", href: /notes/systolic-result-harvesting/ }
     - { label: "과제 5 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: moon-beomyong
@@ -61,7 +62,7 @@
   order: 50
   study:
     - { label: "과제 1 · 행렬곱", href: /notes/matrix-multiplier-designs/ }
-    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#assignment-2 }
     - { label: "과제 3 · 결과 저장", href: /notes/systolic-result-harvesting/ }
     - { label: "과제 5 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: danilo
@@ -73,6 +74,6 @@
   order: 60
   study:
     - { label: "과제 1 · 행렬곱", href: /notes/matrix-multiplier-designs/ }
-    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
+    - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#assignment-2 }
     - { label: "과제 3 · 결과 저장", href: /notes/systolic-result-harvesting/ }
     - { label: "과제 5 · BRAM", href: /notes/bram-fed-systolic-array/ }
