@@ -1,0 +1,35 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { isoDate } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  return notes.map((note) => ({ params: { id: note.id }, props: { note } }));
+}
+interface Props {
+  note: CollectionEntry<'notes'>;
+}
+const { note } = Astro.props;
+const d = note.data;
+const { Content } = await render(note);
+---
+<Base title={d.title} description={d.summary}>
+  <div class="wrap">
+    <header class="page-head">
+      <span class="label"><a href="/notes/">notes</a> / <time datetime={isoDate(d.date)}>{isoDate(d.date)}</time>{d.author && ` · ${d.author}`}</span>
+      <h1>{d.title}</h1>
+      {d.tags.length > 0 && <div class="tags">{d.tags.map((t) => <span class="tag">{t}</span>)}</div>}
+    </header>
+    <article class="prose"><Content /></article>
+    <p class="back mono"><a href="/notes/">← 노트 목록</a></p>
+  </div>
+</Base>
+
+<style>
+  .label a { color: inherit; }
+  .page-head h1 { max-width: 24em; }
+  .tags { margin-top: var(--s-4); }
+  .back { margin: var(--s-8) 0 0; font-size: 14px; }
+</style>

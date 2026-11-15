@@ -1,0 +1,20 @@
+---
+const year = new Date().getFullYear();
+---
+<footer class="site">
+  <div class="wrap">
+    <p><b>PPA Lab</b> · 연세대학교 전기전자공학부 학부생 스터디·프로젝트 팀</p>
+    <p class="mono">
+      <a href="https://github.com/Yonsei-PPA-Lab">github.com/Yonsei-PPA-Lab</a>
+      <span>© {year}</span>
+    </p>
+  </div>
+</footer>
+
+<style>
+  footer.site { border-top: 1px solid var(--line); margin-top: var(--s-8); }
+  .wrap { display: flex; flex-wrap: wrap; gap: 12px 40px; justify-content: space-between; padding-block: var(--s-6) var(--s-7); font-size: var(--fs-small); color: var(--ink-2); }
+  p { margin: 0; }
+  b { color: var(--ink); font-weight: 600; }
+  .mono { font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 20px; }
+</style>

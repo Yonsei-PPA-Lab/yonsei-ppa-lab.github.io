@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectTable from '../../components/ProjectTable.astro';
+import { getProjects } from '../../lib/content';
+
+const projects = await getProjects();
+---
+<Base title="Projects" description="PPA Lab이 진행 중이거나 마친 하드웨어 프로젝트 목록">
+  <div class="wrap">
+    <header class="page-head">
+      <span class="label">projects · {projects.length} entries</span>
+      <h1 class="en">Projects</h1>
+      <p>팀에서 진행 중이거나 마친 프로젝트입니다. 이름을 누르면 개요와 기여자, 결과를 볼 수 있습니다.</p>
+    </header>
+    <ProjectTable projects={projects} />
+  </div>
+</Base>

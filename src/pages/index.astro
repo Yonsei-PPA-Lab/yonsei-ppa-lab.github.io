@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import SystolicArray from '../components/SystolicArray.astro';
+import ProjectTable from '../components/ProjectTable.astro';
+import NoteList from '../components/NoteList.astro';
+import { getProjects, getNotes } from '../lib/content';
+
+const projects = await getProjects();
+const active = projects.filter((p) => p.data.status === 'active');
+const shown = (active.length ? active : projects).slice(0, 4);
+const notes = (await getNotes()).slice(0, 3);
+---
+<Base>
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <h1 class="display">PPA Lab</h1>
+        <dl class="ppa">
+          <div><dt>Power</dt><dd>전력</dd></div>
+          <div><dt>Performance</dt><dd>성능</dd></div>
+          <div><dt>Area</dt><dd>면적</dd></div>
+        </dl>
+        <p class="lede">
+          <strong>RTL 설계부터 검증, FPGA, 합성 후 PPA 분석까지.</strong>{' '}
+          연세대학교 전기전자공학부 학부생들이 하드웨어를 직접 설계하고 측정하며 공부하는 팀입니다.
+        </p>
+      </div>
+      <SystolicArray />
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><h2>Projects</h2><a href="/projects/">전체 보기</a></div>
+      <ProjectTable projects={shown} />
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><h2>Notes</h2><a href="/notes/">전체 보기</a></div>
+      <NoteList notes={notes} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { display: grid; grid-template-columns: 1fr; gap: 40px; padding-block: var(--s-8) 72px; align-items: end; }
+  .hero > * { min-width: 0; }
+  @media (min-width: 900px) { .hero { grid-template-columns: 7fr 5fr; gap: 56px; } }
+  .display {
+    font-family: var(--font-display); font-stretch: 125%; font-weight: 800;
+    font-size: clamp(52px, 8vw, 104px); line-height: 0.92; letter-spacing: -0.02em; margin: 0 0 28px;
+  }
+  .ppa { display: inline-grid; grid-template-columns: repeat(3, auto); max-width: 100%; margin: 0 0 28px; border: 1px solid var(--line); background: var(--block); }
+  .ppa div { padding: 10px 16px; border-right: 1px solid var(--line); min-width: 0; }
+  .ppa div:last-child { border-right: 0; }
+  .ppa dt { font-family: var(--font-mono); font-weight: 500; font-size: 15px; line-height: 1.3; }
+  .ppa dd { margin: 0; font-size: 13px; color: var(--muted); }
+  @media (max-width: 400px) { .ppa div { padding: 8px 10px; } .ppa dt { font-size: 13px; } }
+  .lede { font-size: 19px; line-height: 1.65; color: var(--ink-2); max-width: 34em; margin: 0; text-wrap: pretty; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+</style>

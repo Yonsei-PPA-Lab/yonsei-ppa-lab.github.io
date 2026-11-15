@@ -1,0 +1,38 @@
+/* PPA Lab design tokens — see DESIGN.md */
+:root {
+  --die: #E9ECEF; --block: #F7F8F9;
+  --ink: #111418; --ink-2: #4A525C; --muted: #5E6670;
+  --line: #B9C0C8; --line-strong: #111418;
+  --signal: #F2C230; --on-signal: #111418;
+  --ok: #1F6B3A; --warn: #8A5600;
+  --focus: #111418;
+
+  --font-display: "Archivo Variable", "Archivo", "IBM Plex Sans KR", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans KR", system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+
+  --fs-display: clamp(44px, 7vw, 88px);
+  --fs-h1: 36px; --fs-h2: 26px; --fs-h3: 20px;
+  --fs-body: 17px; --fs-small: 15px; --fs-label: 12px;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
+  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
+  --content: 1120px; --measure: 68ch;
+  --radius: 0; --radius-chip: 2px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --die: #14181D; --block: #1C2127;
+    --ink: #E6E9EC; --ink-2: #B4BCC5; --muted: #98A1AB;
+    --line: #343B44; --line-strong: #E6E9EC;
+    --on-signal: #14181D; --ok: #6CC08A; --warn: #E3A94A; --focus: #F2C230;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --die: #14181D; --block: #1C2127;
+  --ink: #E6E9EC; --ink-2: #B4BCC5; --muted: #98A1AB;
+  --line: #343B44; --line-strong: #E6E9EC;
+  --on-signal: #14181D; --ok: #6CC08A; --warn: #E3A94A; --focus: #F2C230;
+  color-scheme: dark;
+}

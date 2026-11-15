@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import NoteList from '../../components/NoteList.astro';
+import { getNotes } from '../../lib/content';
+
+const notes = await getNotes();
+---
+<Base title="Notes" description="PPA Lab 스터디와 프로젝트에서 정리한 노트">
+  <div class="wrap">
+    <header class="page-head">
+      <span class="label">notes · {notes.length} entries</span>
+      <h1 class="en">Notes</h1>
+      <p>스터디와 프로젝트를 하면서 정리한 글입니다. 최신 글이 위에 있습니다.</p>
+    </header>
+    <NoteList notes={notes} />
+  </div>
+</Base>

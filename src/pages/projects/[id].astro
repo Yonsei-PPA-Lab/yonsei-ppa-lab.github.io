@@ -1,0 +1,67 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { STATUS_LABEL, period } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+const { project } = Astro.props;
+const d = project.data;
+const { Content } = await render(project);
+---
+<Base title={d.title} description={d.summary}>
+  <div class="wrap">
+    <header class="page-head">
+      <span class="label"><a href="/projects/">projects</a> / {project.id}</span>
+      <h1>{d.title}</h1>
+      <p>{d.summary}</p>
+    </header>
+
+    <div class="layout">
+      <article class="prose"><Content /></article>
+
+      <aside class="blk">
+        <span class="inst">u_{project.id.replace(/[^a-z0-9]+/gi, '_')}</span>
+        <dl>
+          <div><dt>Status</dt><dd><span class:list={['st', d.status]}>{STATUS_LABEL[d.status]}</span></dd></div>
+          <div><dt>Period</dt><dd class="mono">{period(d.start, d.end)}</dd></div>
+          {d.areas.length > 0 && (
+            <div><dt>Area</dt><dd><div class="tags">{d.areas.map((a) => <span class="tag">{a}</span>)}</div></dd></div>
+          )}
+          {d.contributors.length > 0 && (
+            <div>
+              <dt>Contributors</dt>
+              <dd>
+                <ul>{d.contributors.map((c) => <li>{c.name} <span>{c.role}</span></li>)}</ul>
+              </dd>
+            </div>
+          )}
+          {d.repo && <div><dt>Repository</dt><dd class="mono"><a href={d.repo}>{d.repo.replace('https://github.com/', '')}</a></dd></div>}
+        </dl>
+      </aside>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .label a { color: inherit; }
+  .layout { display: grid; grid-template-columns: 1fr; gap: var(--s-7); align-items: start; }
+  .layout > * { min-width: 0; }
+  @media (min-width: 960px) {
+    .layout { grid-template-columns: minmax(0, 1fr) 300px; gap: var(--s-8); }
+    aside { order: 2; position: sticky; top: var(--s-5); }
+  }
+  @media (max-width: 959px) { aside { order: -1; } }
+  dl { margin: 0; display: grid; gap: var(--s-4); }
+  dt { font: 500 12px var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  dd { margin: 0; font-size: var(--fs-small); overflow-wrap: anywhere; }
+  dd.mono { font-size: 13px; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li span { color: var(--muted); font-size: 13px; margin-left: 6px; }
+</style>

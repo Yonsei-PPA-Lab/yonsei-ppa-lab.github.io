@@ -1,0 +1,76 @@
+---
+// 4x4 weight-stationary systolic array.
+// PE(r,c) keeps weight W[r][c]. Activations a_r move left to right, partial sums move top to bottom.
+// With row r's input delayed by r cycles, PE(r,c) fires at cycle r+c, so the active PEs form an anti-diagonal wave.
+const N = 4;
+const X0 = 60, Y0 = 44, SIZE = 46, GAP = 16;
+const REST = 3; // cycle shown before the script runs and under reduced motion
+const idx = [...Array(N).keys()];
+const px = (c: number) => X0 + c * (SIZE + GAP);
+const py = (r: number) => Y0 + r * (SIZE + GAP);
+const bottom = py(N - 1) + SIZE;
+---
+<div class="blk array">
+  <span class="inst">u_systolic_4x4</span>
+  <svg
+    viewBox="0 0 320 300"
+    role="img"
+    aria-label="4×4 weight-stationary systolic array 다이어그램. 활성값은 왼쪽에서 오른쪽으로, 부분합은 위에서 아래로 흐른다."
+    data-systolic
+  >
+    {idx.map((c) => (
+      <>
+        <line class="io" x1={px(c) + SIZE / 2} y1={18} x2={px(c) + SIZE / 2} y2={Y0 - 4} />
+        <text class="io-t" x={px(c) + SIZE / 2} y={13} text-anchor="middle">p{c}</text>
+        <line class="io" x1={px(c) + SIZE / 2} y1={bottom + 4} x2={px(c) + SIZE / 2} y2={bottom + 24} />
+        <text class="io-t" x={px(c) + SIZE / 2} y={bottom + 38} text-anchor="middle">y{c}</text>
+      </>
+    ))}
+    {idx.map((r) => (
+      <>
+        <line class="io" x1={22} y1={py(r) + SIZE / 2} x2={X0 - 4} y2={py(r) + SIZE / 2} />
+        <text class="io-t" x={6} y={py(r) + SIZE / 2 + 4}>a{r}</text>
+        {idx.map((c) => (
+          <>
+            {c < N - 1 && <line class="io" x1={px(c) + SIZE} y1={py(r) + SIZE / 2} x2={px(c + 1)} y2={py(r) + SIZE / 2} />}
+            {r < N - 1 && <line class="io" x1={px(c) + SIZE / 2} y1={py(r) + SIZE} x2={px(c) + SIZE / 2} y2={py(r + 1)} />}
+            <g class:list={['pe', { on: r + c === REST }]} data-d={r + c}>
+              <rect x={px(c)} y={py(r)} width={SIZE} height={SIZE} />
+              <text x={px(c) + SIZE / 2} y={py(r) + SIZE / 2 + 4} text-anchor="middle">W{r}{c}</text>
+            </g>
+          </>
+        ))}
+      </>
+    ))}
+  </svg>
+  <div class="cap">
+    <span class="label">Weight-stationary · 4×4 PE</span>
+    <span class="label" data-cycle>cycle {REST}</span>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('[data-systolic]').forEach(function (svg) {
+      var cells = svg.querySelectorAll('.pe');
+      var cap = svg.parentElement.querySelector('[data-cycle]');
+      var step = 3;
+      setInterval(function () {
+        step = (step + 1) % 8; // cycles 0..6 sweep the array, cycle 7 is idle
+        cells.forEach(function (g) { g.classList.toggle('on', Number(g.dataset.d) === step); });
+        if (cap) cap.textContent = 'cycle ' + step;
+      }, 650);
+    });
+  })();
+</script>
+
+<style>
+  svg { width: 100%; height: auto; display: block; }
+  .cap { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .io { stroke: var(--muted); stroke-width: 1.2; fill: none; }
+  .io-t, .pe text { font-family: var(--font-mono); font-size: 11px; fill: var(--muted); }
+  .pe rect { fill: var(--block); stroke: var(--line-strong); stroke-width: 1.2; transition: fill 0.2s; }
+  .pe.on rect { fill: var(--signal); }
+  .pe.on text { fill: var(--on-signal); }
+</style>

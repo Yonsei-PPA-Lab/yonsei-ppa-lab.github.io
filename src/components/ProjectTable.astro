@@ -1,0 +1,62 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { STATUS_LABEL, period } from '../lib/format';
+
+interface Props {
+  projects: CollectionEntry<'projects'>[];
+}
+const { projects } = Astro.props;
+---
+{projects.length === 0 ? (
+  <p class="empty">아직 등록된 프로젝트가 없습니다.</p>
+) : (
+  <div class="tbl-wrap">
+    <table class="reg projects">
+      <thead>
+        <tr><th>ID</th><th>Project</th><th>Area</th><th>Status</th><th>Period</th></tr>
+      </thead>
+      <tbody>
+        {projects.map((p) => (
+          <tr>
+            <td class="id">{p.id}</td>
+            <td class="name">
+              <a href={`/projects/${p.id}/`}>{p.data.title}</a>
+              <span>{p.data.summary}</span>
+            </td>
+            <td class:list={['area', { none: p.data.areas.length === 0 }]}>
+              <div class="tags">{p.data.areas.map((a) => <span class="tag">{a}</span>)}</div>
+            </td>
+            <td class="status"><span class:list={['st', p.data.status]}>{STATUS_LABEL[p.data.status]}</span></td>
+            <td class:list={['num', 'per', { unknown: !p.data.start }]}>{period(p.data.start, p.data.end)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}
+
+<style>
+  .id { font-family: var(--font-mono); font-size: 13px; color: var(--ink-2); white-space: nowrap; }
+  .name a { display: block; font-weight: 600; font-size: var(--fs-body); text-decoration-color: transparent; }
+  .name a:hover { text-decoration-color: var(--signal); }
+  .name span { color: var(--muted); font-size: 14px; }
+
+  /* Phone: each row becomes a two-line stack instead of a wide table. */
+  @media (max-width: 719px) {
+    thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    table, tbody { display: block; }
+    tr {
+      display: grid; grid-template-columns: 1fr auto; gap: 6px 12px;
+      grid-template-areas: 'id status' 'name name' 'area per';
+      padding: 14px 16px; border-bottom: 1px solid var(--line);
+    }
+    tbody tr:last-child { border-bottom: 0; }
+    td { padding: 0 !important; border: 0 !important; min-width: 0; }
+    .id { grid-area: id; }
+    .status { grid-area: status; }
+    .name { grid-area: name; }
+    .area { grid-area: area; }
+    .per { grid-area: per; align-self: center; }
+    .per.unknown, .area.none { display: none; }
+  }
+</style>

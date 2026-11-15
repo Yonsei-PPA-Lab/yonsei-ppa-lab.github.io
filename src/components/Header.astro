@@ -1,0 +1,73 @@
+---
+const NAV = [
+  { href: '/', label: 'Home' },
+  { href: '/about/', label: 'About' },
+  { href: '/projects/', label: 'Projects' },
+  { href: '/notes/', label: 'Notes' },
+];
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<header class="site">
+  <div class="wrap">
+    <a class="wordmark" href="/">PPA Lab</a>
+    <div class="right">
+      <nav aria-label="주 메뉴">
+        <ul>
+          {NAV.map((n) => (
+            <li>
+              <a href={n.href} aria-current={isCurrent(n.href) ? 'page' : undefined}>{n.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <button type="button" class="theme" id="theme-toggle" aria-label="라이트/다크 테마 전환">
+        <span class="sw" aria-hidden="true"></span><span id="theme-label">Theme</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    var label = document.getElementById('theme-label');
+    function current() {
+      var t = root.getAttribute('data-theme');
+      if (t) return t;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function paint() { label.textContent = current() === 'dark' ? 'Dark' : 'Light'; }
+    btn.addEventListener('click', function () {
+      var next = current() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('ppa-theme', next); } catch (e) {}
+      paint();
+    });
+    paint();
+  })();
+</script>
+
+<style>
+  header.site { border-bottom: 1px solid var(--line); }
+  .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; padding-block: 18px; }
+  .wordmark { font-family: var(--font-display); font-stretch: 125%; font-weight: 800; font-size: 22px; letter-spacing: -0.01em; text-decoration: none; }
+  .right { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
+  ul { list-style: none; display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; }
+  nav a { font-family: var(--font-mono); font-size: 15px; text-decoration: none; padding: 4px 10px; display: block; }
+  nav a[aria-current='page'] { background: var(--signal); color: var(--on-signal); }
+  nav a:not([aria-current]):hover { background: var(--block); }
+  .theme {
+    display: inline-flex; align-items: center; gap: 8px;
+    font: 500 12px var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase;
+    background: transparent; color: var(--ink-2); border: 1px solid var(--line); padding: 5px 9px; cursor: pointer;
+  }
+  .theme:hover { border-color: var(--line-strong); color: var(--ink); }
+  @media (max-width: 599px) {
+    .right { display: contents; }
+    .theme { order: 2; }
+    nav { order: 3; flex-basis: 100%; margin-left: -10px; }
+  }
+  .sw { width: 10px; height: 10px; border: 1px solid var(--line-strong); background: linear-gradient(90deg, var(--ink) 50%, transparent 50%); }
+</style>
