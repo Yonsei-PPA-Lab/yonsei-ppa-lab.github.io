@@ -6,8 +6,7 @@ import NoteList from '../components/NoteList.astro';
 import { getProjects, getNotes } from '../lib/content';
 
 const projects = await getProjects();
-const active = projects.filter((p) => p.data.status === 'active');
-const shown = (active.length ? active : projects).slice(0, 4);
+const shown = projects.slice(0, 4);
 const notes = (await getNotes()).slice(0, 3);
 ---
 <Base>
