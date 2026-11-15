@@ -9,10 +9,7 @@
 # 제출 기록으로 관심 분야나 합류 시기를 추정하지 않습니다.
 - id: tak-hyobin
   name: 탁효빈
-  role: 스터디장 · 커리큘럼 설계
-  contributions:
-    - 1차 모집·운영, 학습자료 제작과 과제 출제
-    - RTL 구현, 데이터 흐름·타이밍 설명, 소자·공정 세미나
+  role: 스터디장
   since: "2026-03"
   order: 0
   study:
@@ -22,20 +19,14 @@
     - { label: "과제 5 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: kong-minseok
   name: 공민석
-  role: RTL·프로세서 설계
-  contributions:
-    - 4×4 어레이 발표와 RV32I single-cycle 코어 구현
-    - 전력·제어 세미나, 회로 설계 경진대회 참여
+  role: 팀원
   since: "2026-03"
   order: 40
   study:
     - { label: "과제 2 · 어레이", href: /notes/spring-2026-curriculum/#23주차-44-weight-stationary-어레이 }
 - id: kim-yonghyeon
   name: 김용현
-  role: RTL·메모리 인터페이스
-  contributions:
-    - 어레이·결과 저장·BRAM 읽기 제어 구현과 테스트벤치
-    - 데이터센터에서의 CPU 역할 세미나
+  role: 팀원
   since: "2026-03"
   order: 30
   study:
@@ -45,10 +36,7 @@
     - { label: "과제 5 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: kim-jinmok
   name: 김진목
-  role: RTL·아키텍처 학습
-  contributions:
-    - 행렬 연산 구현, 디스플레이 픽셀 제어 RTL 실습
-    - Transformer·AP 세미나, 회로 설계 경진대회 참여
+  role: 팀원
   since: "2026-03"
   order: 20
   study:
@@ -58,10 +46,7 @@
     - { label: "과제 5 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: kim-hamin
   name: 김하민
-  role: RTL 설계·검증
-  contributions:
-    - 어레이·결과 수확·BRAM 연동 구현과 시뮬레이션
-    - 회로설계·VLSI·임베디드 분야 비교 발표
+  role: 팀원
   since: "2026-03"
   order: 10
   study:
@@ -71,10 +56,7 @@
     - { label: "과제 5 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: moon-beomyong
   name: 문범용
-  role: RTL·연산구조 비교
-  contributions:
-    - 어레이·결과 저장·BRAM 연동 구현
-    - Adder Tree 구조 비교와 ARM 세미나
+  role: 팀원
   since: "2026-03"
   order: 50
   study:
@@ -84,9 +66,7 @@
     - { label: "과제 5 · BRAM", href: /notes/bram-fed-systolic-array/ }
 - id: danilo
   name: Danilo
-  role: RTL 설계·검증
-  contributions:
-    - 1학기 행렬곱·어레이·결과 저장·BRAM 과제 참여
+  role: 팀원
   since: "2026-1학기"
   until: "2026-09"
   status: former

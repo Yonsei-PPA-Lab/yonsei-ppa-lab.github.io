@@ -23,7 +23,7 @@ const groups = [
   {
     id: 'members',
     title: 'Members',
-    description: '현재 활동 중인 초기 멤버들입니다. 운영 업무와 제출·발표 자료에 나타난 주요 활동을 함께 정리했습니다.',
+    description: '현재 활동 중인 초기 멤버들입니다.',
     entries: members.filter((m) => m.data.status === 'active'),
   },
   {
@@ -58,7 +58,7 @@ const groups = [
         <div class="tbl-wrap">
           <table class="reg member-table">
             <thead>
-              <tr><th scope="col">Name</th><th scope="col">역할 · 주요 활동</th><th scope="col">활동 기간</th><th scope="col">Study archive</th></tr>
+              <tr><th scope="col">Name</th><th scope="col">역할</th><th scope="col">활동 기간</th><th scope="col">Study archive</th></tr>
             </thead>
             <tbody>
               {group.entries.map((m) => (
@@ -66,12 +66,7 @@ const groups = [
                   <td class="name">
                     {m.data.github ? <a href={'https://github.com/' + m.data.github}>{m.data.name}</a> : m.data.name}
                   </td>
-                  <td class="contribution">
-                    <strong>{m.data.role}</strong>
-                    {m.data.contributions.length > 0 && (
-                      <ul class="contribution-list">{m.data.contributions.map((entry) => <li>{entry}</li>)}</ul>
-                    )}
-                  </td>
+                  <td class="member-role">{m.data.role}</td>
                   <td class="activity-period mono">{activityPeriod(m)}</td>
                   <td class="archive">
                     {m.data.study.length > 0 ? (
@@ -97,10 +92,7 @@ const groups = [
   .members { margin-top: var(--s-8); }
   .member-caption { font-size: var(--fs-small); color: var(--muted); margin: 0 0 var(--s-5); max-width: var(--measure); }
   .name { font-weight: 600; white-space: nowrap; }
-  .contribution { min-width: 230px; }
-  .contribution strong { font-weight: 500; }
-  .contribution-list { list-style: none; margin: 6px 0 0; padding: 0; color: var(--muted); font-size: 14px; }
-  .contribution-list li + li { margin-top: 4px; }
+  .member-role { white-space: nowrap; }
   .activity-period { min-width: 130px; font-size: 13px; color: var(--ink-2); }
   .study-links { display: flex; flex-wrap: wrap; gap: 8px 16px; list-style: none; margin: 0; padding: 0; min-width: 160px; }
   .study-links li { margin: 0; }
@@ -110,13 +102,13 @@ const groups = [
     .member-table, .member-table tbody { display: block; }
     .member-table tr {
       display: grid; grid-template-columns: minmax(0, 1fr) auto;
-      grid-template-areas: 'name period' 'contribution contribution' 'archive archive';
+      grid-template-areas: 'name period' 'role role' 'archive archive';
       gap: 12px 16px; padding: 18px 16px; border-bottom: 1px solid var(--line);
     }
     .member-table tbody tr:last-child { border-bottom: 0; }
     .member-table td { padding: 0 !important; border: 0 !important; min-width: 0; }
     .name { grid-area: name; align-self: center; }
-    .contribution { grid-area: contribution; }
+    .member-role { grid-area: role; }
     .activity-period { grid-area: period; text-align: right; max-width: 170px; align-self: center; }
     .archive { grid-area: archive; padding-top: 2px !important; }
     .study-links { min-width: 0; gap: 8px 16px; font-size: 14px; }

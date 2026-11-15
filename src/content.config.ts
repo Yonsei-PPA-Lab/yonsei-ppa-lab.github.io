@@ -40,7 +40,6 @@ const members = defineCollection({
   schema: z.object({
     name: z.string(),
     role: z.string(),
-    contributions: z.array(z.string()).default([]),
     status: z.enum(['active', 'former']).default('active'),
     until: z.string().optional(),
     order: z.number().default(100),
