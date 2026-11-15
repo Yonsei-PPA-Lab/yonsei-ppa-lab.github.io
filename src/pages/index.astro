@@ -14,6 +14,7 @@ const notes = (await getNotes()).slice(0, 3);
   <div class="wrap">
     <div class="hero">
       <div>
+        <p class="label tagline">System on Chip Optimization</p>
         <h1 class="display">PPA Lab</h1>
         <dl class="ppa">
           <div><dt>Power</dt><dd>전력</dd></div>
@@ -52,6 +53,7 @@ const notes = (await getNotes()).slice(0, 3);
     font-family: var(--font-display); font-stretch: 125%; font-weight: 800;
     font-size: clamp(52px, 8vw, 104px); line-height: 0.92; letter-spacing: -0.02em; margin: 0 0 28px;
   }
+  .tagline { margin: 0 0 var(--s-4); }
   .ppa { display: inline-grid; grid-template-columns: repeat(3, auto); max-width: 100%; margin: 0 0 28px; border: 1px solid var(--line); background: var(--block); }
   .ppa div { padding: 10px 16px; border-right: 1px solid var(--line); min-width: 0; }
   .ppa div:last-child { border-right: 0; }

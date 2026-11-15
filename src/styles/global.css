@@ -141,6 +141,15 @@ table.reg .num { font-family: var(--font-mono); font-size: 13px; font-variant-nu
 :root[data-theme="dark"] .astro-code,
 :root[data-theme="dark"] .astro-code span { color: var(--shiki-dark); }
 
+/* Theme-specific images (e.g. logo variants) */
+.only-dark { display: none !important; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .only-dark { display: revert !important; }
+  :root:not([data-theme="light"]) .only-light { display: none !important; }
+}
+:root[data-theme="dark"] .only-dark { display: revert !important; }
+:root[data-theme="dark"] .only-light { display: none !important; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }

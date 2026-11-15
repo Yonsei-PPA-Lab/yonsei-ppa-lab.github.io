@@ -13,7 +13,14 @@ const members = await getCollection('members');
       <span class="label">about</span>
       <h1>{about.data.title}</h1>
     </header>
-    <div class="prose"><Content /></div>
+    <div class="intro">
+      <div class="prose"><Content /></div>
+      <figure class="blk logo">
+        <span class="inst">logo</span>
+        <img class="only-light" src="/logo/logo-light.png" alt="PPA Lab 로고. System on Chip Optimization" width="405" height="314" />
+        <img class="only-dark" src="/logo/logo-dark.png" alt="PPA Lab 로고. System on Chip Optimization" width="405" height="314" />
+      </figure>
+    </div>
   </div>
 
   <section class="sec members" id="members">
@@ -41,6 +48,11 @@ const members = await getCollection('members');
 </Base>
 
 <style>
+  .intro { display: grid; grid-template-columns: 1fr; gap: var(--s-7); align-items: start; }
+  .intro > * { min-width: 0; }
+  @media (min-width: 960px) { .intro { grid-template-columns: minmax(0, 1fr) 320px; gap: var(--s-8); } }
+  .logo { margin: 0; padding: 28px 24px 24px; max-width: 320px; }
+  .logo img { display: block; width: 100%; height: auto; }
   .members { margin-top: var(--s-8); }
   table { min-width: 460px; }
   .name { font-weight: 500; white-space: nowrap; }

@@ -34,6 +34,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/og.png', Astro.site)} />
     <meta name="color-scheme" content="light dark" />
     <script is:inline>
       // Apply the saved theme before first paint.
