@@ -9,6 +9,9 @@
 - id: kong-minseok
   name: 공민석
   role: 멤버
+- id: kim-yonghyeon
+  name: 김용현
+  role: 멤버
 - id: kim-jinmok
   name: 김진목
   role: 멤버
@@ -17,4 +20,7 @@
   role: 멤버
 - id: moon-beomyong
   name: 문범용
+  role: 멤버
+- id: danilo
+  name: Danilo
   role: 멤버
