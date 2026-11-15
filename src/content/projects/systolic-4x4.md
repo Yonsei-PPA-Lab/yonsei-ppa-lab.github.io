@@ -51,3 +51,13 @@ module mac_pe_ws #(
 ## 이어지는 작업
 
 여기서 만든 MAC 유닛은 [RV32I 코어의 커스텀 명령어](/projects/rv32i-mac/)와 [Tiny Tapeout 제출](/projects/tiny-tapeout-mac/)에 다시 쓰입니다. 스터디 진행 과정은 노트 [2026 봄 스터디: 2×2 곱셈기에서 4×4 어레이까지](/notes/spring-2026-curriculum/)에 정리했습니다.
+
+## 스터디 구현 기록
+
+봄 스터디 제출 기록에는 2×2 행렬곱의 여러 구현 방식, 4×4 어레이의 PE 연결과 입력 제어, 4주차 결과 수확 로직, 5주차 BRAM 연동 코드가 남아 있습니다. 각 단계의 설계 선택은 다음 노트에서 볼 수 있습니다.
+
+- [같은 2×2 행렬곱을 서로 다르게 구현하기](/notes/matrix-multiplier-designs/): 병렬 계산, 여러 클럭에 걸친 누적, 이웃 PE로 입력 전달
+- [Systolic Array의 결과를 언제 저장해야 할까?](/notes/systolic-result-harvesting/): 출력 도착 순서, 결과 보존, 부분합 비트 폭
+- [테스트벤치 입력에서 BRAM 입력으로 바꾸기](/notes/bram-fed-systolic-array/): 읽기 주소, 메모리 지연, 입력·가중치 버퍼 연결
+
+이 노트들은 제출된 코드의 구조와 학습 과정을 설명합니다. 구현별 검증 결과나 자원 사용량을 비교한 자료는 아닙니다.
