@@ -5,9 +5,34 @@ import Base from '../layouts/Base.astro';
 const about = await getEntry('pages', 'about');
 if (!about) throw new Error('src/content/pages/about.md is missing');
 const { Content } = await render(about);
-const members = await getCollection('members');
-const hasInterests = members.some((m) => m.data.interests.length > 0);
-const hasSince = members.some((m) => m.data.since);
+const members = (await getCollection('members')).sort((a, b) => a.data.order - b.data.order);
+type Member = (typeof members)[number];
+
+function activityDate(value?: string) {
+  if (!value) return '–';
+  if (/^\d{4}-\d{2}$/.test(value)) return value.replace('-', '.');
+  return value.replace(/^(\d{4})-(\d)학기$/, '$1년 $2학기');
+}
+
+function activityPeriod(member: Member) {
+  return activityDate(member.data.since) + ' ~ ' +
+    (member.data.until ? activityDate(member.data.until) : member.data.status === 'active' ? '현재' : '–');
+}
+
+const groups = [
+  {
+    id: 'members',
+    title: 'Members',
+    description: '현재 활동 중인 초기 멤버들입니다. 운영 업무와 제출·발표 자료에 나타난 주요 활동을 함께 정리했습니다.',
+    entries: members.filter((m) => m.data.status === 'active'),
+  },
+  {
+    id: 'past-members',
+    title: '이전 멤버',
+    description: '함께한 활동과 제출 기록을 남깁니다.',
+    entries: members.filter((m) => m.data.status === 'former'),
+  },
+];
 ---
 <Base title={about.data.title} description={about.data.description}>
   <div class="wrap">
@@ -25,34 +50,42 @@ const hasSince = members.some((m) => m.data.since);
     </div>
   </div>
 
-  <section class="sec members" id="members">
-    <div class="wrap">
-      <div class="sec-head"><h2>Members</h2></div>
-      <p class="member-caption">봄 스터디에서 제출한 주차와 해당 학습 노트를 연결했습니다.</p>
-      <div class="tbl-wrap">
-        <table class="reg">
-          <thead><tr><th scope="col">Name</th><th scope="col">Role</th><th scope="col">Study archive</th>{hasInterests && <th scope="col">Interest</th>}{hasSince && <th scope="col">Since</th>}</tr></thead>
-          <tbody>
-            {members.map((m) => (
-              <tr>
-                <td class="name">
-                  {m.data.github ? <a href={`https://github.com/${m.data.github}`}>{m.data.name}</a> : m.data.name}
-                </td>
-                <td>{m.data.role}</td>
-                <td>
-                  {m.data.study.length > 0 ? (
-                    <ul class="study-links">{m.data.study.map((entry) => <li><a href={entry.href}>{entry.label}</a></li>)}</ul>
-                  ) : '–'}
-                </td>
-                {hasInterests && <td><div class="tags">{m.data.interests.map((i) => <span class="tag">{i}</span>)}</div></td>}
-                {hasSince && <td class="num">{m.data.since ?? '–'}</td>}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+  {groups.filter((group) => group.entries.length > 0).map((group) => (
+    <section class="sec members" id={group.id}>
+      <div class="wrap">
+        <div class="sec-head"><h2>{group.title}</h2></div>
+        <p class="member-caption">{group.description}</p>
+        <div class="tbl-wrap">
+          <table class="reg member-table">
+            <thead>
+              <tr><th scope="col">Name</th><th scope="col">역할 · 주요 활동</th><th scope="col">활동 기간</th><th scope="col">Study archive</th></tr>
+            </thead>
+            <tbody>
+              {group.entries.map((m) => (
+                <tr>
+                  <td class="name">
+                    {m.data.github ? <a href={'https://github.com/' + m.data.github}>{m.data.name}</a> : m.data.name}
+                  </td>
+                  <td class="contribution">
+                    <strong>{m.data.role}</strong>
+                    {m.data.contributions.length > 0 && (
+                      <ul class="contribution-list">{m.data.contributions.map((entry) => <li>{entry}</li>)}</ul>
+                    )}
+                  </td>
+                  <td class="activity-period mono">{activityPeriod(m)}</td>
+                  <td class="archive">
+                    {m.data.study.length > 0 ? (
+                      <ul class="study-links">{m.data.study.map((entry) => <li><a href={entry.href}>{entry.label}</a></li>)}</ul>
+                    ) : '–'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  ))}
 </Base>
 
 <style>
@@ -62,8 +95,30 @@ const hasSince = members.some((m) => m.data.since);
   .logo { margin: 0; padding: 28px 24px 24px; max-width: 320px; }
   .logo img { display: block; width: 100%; height: auto; }
   .members { margin-top: var(--s-8); }
-  .member-caption { font-size: var(--fs-small); color: var(--muted); margin: 0 0 var(--s-5); }
-  .study-links { display: flex; flex-wrap: wrap; gap: 8px 20px; list-style: none; margin: 0; padding: 0; }
+  .member-caption { font-size: var(--fs-small); color: var(--muted); margin: 0 0 var(--s-5); max-width: var(--measure); }
+  .name { font-weight: 600; white-space: nowrap; }
+  .contribution { min-width: 230px; }
+  .contribution strong { font-weight: 500; }
+  .contribution-list { list-style: none; margin: 6px 0 0; padding: 0; color: var(--muted); font-size: 14px; }
+  .contribution-list li + li { margin-top: 4px; }
+  .activity-period { min-width: 130px; font-size: 13px; color: var(--ink-2); }
+  .study-links { display: flex; flex-wrap: wrap; gap: 8px 16px; list-style: none; margin: 0; padding: 0; min-width: 160px; }
   .study-links li { margin: 0; }
-  .name { font-weight: 500; white-space: nowrap; }
+
+  @media (max-width: 719px) {
+    .member-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    .member-table, .member-table tbody { display: block; }
+    .member-table tr {
+      display: grid; grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: 'name period' 'contribution contribution' 'archive archive';
+      gap: 12px 16px; padding: 18px 16px; border-bottom: 1px solid var(--line);
+    }
+    .member-table tbody tr:last-child { border-bottom: 0; }
+    .member-table td { padding: 0 !important; border: 0 !important; min-width: 0; }
+    .name { grid-area: name; align-self: center; }
+    .contribution { grid-area: contribution; }
+    .activity-period { grid-area: period; text-align: right; max-width: 170px; align-self: center; }
+    .archive { grid-area: archive; padding-top: 2px !important; }
+    .study-links { min-width: 0; gap: 8px 16px; font-size: 14px; }
+  }
 </style>

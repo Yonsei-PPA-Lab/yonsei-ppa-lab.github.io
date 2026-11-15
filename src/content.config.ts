@@ -40,9 +40,13 @@ const members = defineCollection({
   schema: z.object({
     name: z.string(),
     role: z.string(),
+    contributions: z.array(z.string()).default([]),
+    status: z.enum(['active', 'former']).default('active'),
+    until: z.string().optional(),
+    order: z.number().default(100),
     study: z.array(z.object({ label: z.string(), href: z.string().startsWith('/') })).default([]),
     interests: z.array(z.string()).default([]),
-    since: z.string().optional(), // "2026-2"
+    since: z.string().optional(), // "2026-03" or "2026-1학기" when only the semester is known
     github: z.string().optional(),
   }),
 });
