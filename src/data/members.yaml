@@ -77,3 +77,23 @@
     - { label: "2~3주차 · 어레이", href: /notes/spring-2026-curriculum/#week-2-3 }
     - { label: "4주차 · 결과 저장", href: /notes/systolic-result-harvesting/ }
     - { label: "5주차 · BRAM", href: /notes/bram-fed-systolic-array/ }
+- id: jeong-seheon
+  name: 정세헌
+  role: 팀원
+  since: "2026-2학기"
+  order: 55
+- id: lee-jeongmin
+  name: 이정민
+  role: 팀원
+  since: "2026-2학기"
+  order: 56
+- id: park-yunjeong
+  name: 박윤정
+  role: 팀원
+  since: "2026-2학기"
+  order: 57
+- id: song-mingyu
+  name: 송민규
+  role: 팀원
+  since: "2026-2학기"
+  order: 58
