@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://yonsei-ppa-lab.github.io/sitemap.xml

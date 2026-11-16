@@ -14,7 +14,7 @@ contributors:
 
 ## 개요
 
-PPA Lab 멤버 세 명이 팀 **반도체 YAHO~** (Yonsei Architecture Hardware Optimization)로 2026 전국 대학생 AI 반도체 회로 설계 경진대회 디지털 트랙에 참가해 만든 2차 과제 설계입니다. 8월 28일에 낸 1차 과제는 [벡터 패킷 AER 송신기](/projects/aer-transmitter/)에 정리했습니다. 2차 결과물은 2026년 10월 30일에 제출했고, 2차 발표팀으로 선정되었습니다. 발표와 시상은 11월 28일 대한전자공학회 추계학술대회에서 열립니다.
+PPA Lab 멤버 세 명이 팀 **반도체 YAHO~** (Yonsei Architecture Hardware Optimization)로 2026 전국 대학생 AI 반도체 회로 설계 경진대회 디지털 트랙에 참가해 만든 2차 과제 설계입니다. 8월 28일에 낸 1차 과제는 [벡터 패킷 AER 송신기](/projects/aer-transmitter/)에 정리했습니다. 2차 결과물은 마감인 2026년 10월 30일(금) 18:00까지 제출했고, 2차 발표팀으로 선정되었습니다. 발표와 시상은 11월 28일 대한전자공학회 추계학술대회에서 열립니다.
 
 같은 대회에 PPA Lab의 다른 팀인 [회로 YAHO~](/projects/world-memory-mapper/)도 다른 구조로 참가했습니다.
 

@@ -43,7 +43,7 @@ RTL에서 GDSII까지 설계 흐름을 경험하고, 장기적으로 MPW 프로�
 - **2026년 4월**: 2×2 행렬 곱셈기 구현과 테스트벤치로 스터디를 시작하고, 4×4 weight-stationary 어레이 과제로 넘어갔습니다.
 - **2026년 5월**: 어레이 구현, 결과 수확과 지연 분석, BRAM 연동으로 학습을 확장했습니다. 과제별 내용은 [봄 스터디 기록](/notes/spring-2026-curriculum/)에서 볼 수 있습니다.
 - **2026년 여름**: RISC-V 코어와 MAC 명령어, Tiny Tapeout을 목표로 후속 학습을 계획하고 관련 구현을 진행했습니다. 7월에는 모바일 AP, 데이터센터의 CPU, 전력·제어, Transformer 등을 주제로 [세미나](/notes/seminars-2026/)를 열었습니다.
-- **2026년 7~10월**: 두 팀이 전국 대학생 AI 반도체 회로 설계 경진대회에 참가했습니다. 두 팀 모두 1차 과제를 8월 28일에, 2차 과제를 10월 30일에 제출했습니다. 반도체 YAHO~ 팀의 [1차](/projects/aer-transmitter/)와 [2차](/projects/event-world-mapper/), 회로 YAHO~ 팀의 [1차](/projects/hybrid-aer/)와 [2차](/projects/world-memory-mapper/) 설계를 각각 정리했습니다. 반도체 YAHO~ 팀은 2차 발표팀으로 선정되었습니다.
+- **2026년 7~10월**: 두 팀이 전국 대학생 AI 반도체 회로 설계 경진대회에 참가했습니다. 7월 23일 오리엔테이션에서 과제가 공개되었고, 두 팀 모두 1차 결과물을 8월 28일에, 2차 결과물을 10월 30일에 제출했습니다. 반도체 YAHO~ 팀의 [1차](/projects/aer-transmitter/)와 [2차](/projects/event-world-mapper/), 회로 YAHO~ 팀의 [1차](/projects/hybrid-aer/)와 [2차](/projects/world-memory-mapper/) 설계를 각각 정리했습니다. 반도체 YAHO~ 팀은 2차 발표팀으로 선정되었습니다.
 - **2026년 9월**: 2학기 신규 멤버를 모집하고 9월 21일에 첫 정기 세션을 열었습니다.
 
 코드와 자료는 [GitHub](https://github.com/Yonsei-PPA-Lab)에서 공개합니다.
