@@ -5,7 +5,7 @@ areas: [RTL, Verification, FPGA, Arch]
 status: done
 start: "2026-04"
 end: "2026-07"
-order: 2
+order: 3
 ---
 
 ## 개요

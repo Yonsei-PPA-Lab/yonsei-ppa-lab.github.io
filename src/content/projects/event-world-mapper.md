@@ -1,5 +1,5 @@
 ---
-title: 저전력 이벤트 → 월드 매퍼
+title: "반도체 YAHO~ 팀: 저전력 이벤트 → 월드 매퍼"
 summary: 회전하는 이벤트 센서의 출력을 월드 좌표 메모리에 쌓는 회로. 2026 전국 대학생 AI 반도체 회로 설계 경진대회 출품작
 areas: [RTL, Verification, EDA/PPA]
 status: done
@@ -15,6 +15,8 @@ contributors:
 ## 개요
 
 PPA Lab 멤버 세 명이 팀 **반도체 YAHO~** (Yonsei Architecture Hardware Optimization)로 2026 전국 대학생 AI 반도체 회로 설계 경진대회 디지털 트랙에 참가해 만든 설계입니다. 2차 결과물을 2026년 10월 30일에 제출했고, 시상과 발표는 11월 28일 대한전자공학회 추계학술대회에서 열립니다.
+
+같은 대회에 PPA Lab의 다른 팀인 [회로 YAHO~](/projects/world-memory-mapper/)도 다른 구조로 참가했습니다.
 
 과제는 작은 이벤트 센서(n×m)가 방향을 바꾸며 내보내는 시각 정보를, 훨씬 큰 월드 메모리(N×M)의 올바른 위치에 쌓는 회로를 설계하는 것입니다. 센서가 얼마나 돌았는지는 주어지지 않습니다.
 

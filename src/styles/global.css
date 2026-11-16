@@ -119,7 +119,7 @@ table.reg .num { font-family: var(--font-mono); font-size: 13px; font-variant-nu
 .prose img { display: block; border: 1px solid var(--line); height: auto; }
 .prose :not(pre) > code { font-family: var(--font-mono); font-size: 0.88em; background: var(--block); border: 1px solid var(--line); padding: 1px 5px; border-radius: var(--radius-chip); }
 .prose table { display: block; overflow-x: auto; border-collapse: collapse; font-size: var(--fs-small); margin: 0 0 var(--s-5); max-width: 100%; }
-.prose th { text-align: left; font: 500 12px var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding: 8px 14px; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+.prose th { text-align: left; font: 500 12px var(--font-mono); letter-spacing: 0.02em; color: var(--muted); padding: 8px 14px; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
 .prose td { padding: 10px 14px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
 @media (max-width: 719px) {
   .prose th, .prose td { padding-inline: 8px; }
