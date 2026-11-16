@@ -8,6 +8,26 @@ import { getProjects, getNotes } from '../lib/content';
 const projects = await getProjects();
 const shown = projects.slice(0, 4);
 const notes = (await getNotes()).slice(0, 3);
+
+// Placed-and-routed layouts from the two contest designs. Numbers are the ones on each project page.
+const layouts = [
+  {
+    inst: 'u_rot_event_mapper',
+    href: '/projects/event-world-mapper/',
+    img: '/projects/event-world-mapper/layout.png', w: 900, h: 891,
+    kicker: '반도체 YAHO~ · GPDK045',
+    title: '저전력 이벤트 → 월드 매퍼',
+    specs: [['Clock', '2.90 ns'], ['Cell area', '7,662 µm²'], ['Energy', '1.38 pJ/event']],
+  },
+  {
+    inst: 'u_wm_top',
+    href: '/projects/world-memory-mapper/',
+    img: '/projects/world-memory-mapper/layout.png', w: 681, h: 653,
+    kicker: '회로 YAHO~ · GPDK045',
+    title: 'AER 원통형 월드 메모리 매퍼',
+    specs: [['Clock', '10.0 ns'], ['Logic area', '56,706 µm²'], ['DRC', '0']],
+  },
+];
 ---
 <Base>
   <div class="wrap">
@@ -20,18 +40,37 @@ const notes = (await getNotes()).slice(0, 3);
           <div><dt>Performance</dt><dd>성능</dd></div>
           <div><dt>Area</dt><dd>면적</dd></div>
         </dl>
-        <p class="lede">
-          <strong>RTL 설계부터 검증, FPGA, 합성 후 PPA 분석까지.</strong>{' '}
-          연세대학교 전기전자공학부 학부생들이 하드웨어를 직접 설계하고 측정하며 공부하는 팀입니다.
-        </p>
       </div>
-      <SystolicArray />
+      <p class="lede">
+        <strong>RTL 설계부터 검증, FPGA, 합성 후 PPA 분석까지.</strong>{' '}
+        연세대학교 전기전자공학부 학부생들이 하드웨어를 직접 설계하고 측정하며 공부하는 팀입니다.
+      </p>
     </div>
+    <div class="first"><SystolicArray /></div>
   </div>
 
   <section class="sec">
     <div class="wrap">
       <div class="sec-head"><h2>Projects</h2><a href="/projects/">전체 보기</a></div>
+      <div class="layouts">
+        {layouts.map((l) => (
+          <figure class="blk lay">
+            <span class="inst">{l.inst}</span>
+            <a class="shot" href={l.href} tabindex="-1" aria-hidden="true">
+              <img src={l.img} alt="" width={l.w} height={l.h} loading="lazy" decoding="async" />
+            </a>
+            <figcaption>
+              <span class="label">{l.kicker}</span>
+              <a class="ttl" href={l.href}>{l.title}</a>
+              <dl>
+                {l.specs.map(([k, v]) => (
+                  <div><dt>{k}</dt><dd>{v}</dd></div>
+                ))}
+              </dl>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
       <ProjectTable projects={shown} />
     </div>
   </section>
@@ -45,15 +84,16 @@ const notes = (await getNotes()).slice(0, 3);
 </Base>
 
 <style>
-  .hero { display: grid; grid-template-columns: 1fr; gap: 40px; padding-block: var(--s-8) 72px; align-items: end; }
+  .hero { display: grid; grid-template-columns: 1fr; gap: 28px; padding-block: var(--s-8) 44px; align-items: end; }
   .hero > * { min-width: 0; }
   @media (min-width: 900px) { .hero { grid-template-columns: 7fr 5fr; gap: 56px; } }
+  .first { padding-bottom: 72px; }
   .display {
     font-family: var(--font-display); font-stretch: 125%; font-weight: 800;
     font-size: clamp(52px, 8vw, 104px); line-height: 0.92; letter-spacing: -0.02em; margin: 0 0 28px;
   }
   .tagline { margin: 0 0 var(--s-4); }
-  .ppa { display: inline-grid; grid-template-columns: repeat(3, auto); max-width: 100%; margin: 0 0 28px; border: 1px solid var(--line); background: var(--block); }
+  .ppa { display: inline-grid; grid-template-columns: repeat(3, auto); max-width: 100%; margin: 0; border: 1px solid var(--line); background: var(--block); }
   .ppa div { padding: 10px 16px; border-right: 1px solid var(--line); min-width: 0; }
   .ppa div:last-child { border-right: 0; }
   .ppa dt { font-family: var(--font-mono); font-weight: 500; font-size: 15px; line-height: 1.3; }
@@ -61,4 +101,18 @@ const notes = (await getNotes()).slice(0, 3);
   @media (max-width: 400px) { .ppa div { padding: 8px 10px; } .ppa dt { font-size: 13px; } }
   .lede { font-size: 19px; line-height: 1.65; color: var(--ink-2); max-width: 34em; margin: 0; text-wrap: pretty; }
   .lede strong { color: var(--ink); font-weight: 600; }
+
+  .layouts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; margin: 12px 0 36px; }
+  @media (min-width: 900px) { .layouts { grid-template-columns: 1fr 1fr; gap: 24px; } }
+  .lay { margin: 0; display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 20px; align-items: center; padding: 24px 20px 20px; }
+  @media (min-width: 480px) { .lay { grid-template-columns: 176px minmax(0, 1fr); gap: 24px; } }
+  .shot { display: block; background: #000; border: 1px solid var(--line); }
+  .shot img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+  .lay .label { display: block; margin-bottom: 6px; }
+  .ttl { display: block; font-weight: 600; line-height: 1.45; text-decoration-color: transparent; }
+  .ttl:hover { text-decoration-color: var(--signal); }
+  .lay dl { margin: 14px 0 0; border-top: 1px solid var(--line); }
+  .lay dl div { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px solid var(--line); }
+  .lay dt { font: 11px/1.9 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .lay dd { margin: 0; font: 500 13px/1.7 var(--font-mono); white-space: nowrap; }
 </style>

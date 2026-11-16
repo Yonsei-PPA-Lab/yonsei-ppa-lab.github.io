@@ -1,76 +1,257 @@
 ---
-// 4x4 weight-stationary systolic array.
-// PE(r,c) keeps weight W[r][c]. Activations a_r move left to right, partial sums move top to bottom.
-// With row r's input delayed by r cycles, PE(r,c) fires at cycle r+c, so the active PEs form an anti-diagonal wave.
+// 4x4 weight-stationary systolic array, run on the matrices the spring study loaded into BRAM
+// (a_matrix.coe, w_matrix.coe). The array computes C = A x W.
+//
+// PE(r,c) keeps weight W[r][c]. Array row r receives column r of A, delayed by r cycles.
+// Activations move left to right, partial sums move top to bottom, so at cycle t
+// PE(r,c) works on input vector i = t - r - c and C[i][c] leaves the bottom row at cycle i + c + 3.
 const N = 4;
-const X0 = 60, Y0 = 44, SIZE = 46, GAP = 16;
-const REST = 3; // cycle shown before the script runs and under reduced motion
+const A = [
+  [2, 0, 1, 1],
+  [0, 3, 0, 2],
+  [1, 1, 2, 0],
+  [0, 0, 1, 3],
+];
+const W = [
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9, 10, 11, 12],
+  [13, 14, 15, 16],
+];
+const LAST = 3 * (N - 1); // cycle in which C[3][3] leaves the array
+const REST = 4; // cycle drawn before the script runs
+
+const X0 = 212, Y0 = 36, SIZE = 62, GX = 26, GY = 18, TOK = 22, QP = 26;
+const VW = 570, VH = 392;
 const idx = [...Array(N).keys()];
-const px = (c: number) => X0 + c * (SIZE + GAP);
-const py = (r: number) => Y0 + r * (SIZE + GAP);
+const px = (c: number) => X0 + c * (SIZE + GX);
+const py = (r: number) => Y0 + r * (SIZE + GY);
 const bottom = py(N - 1) + SIZE;
+
+// Partial sum held by PE(r,c) while it works on input vector i.
+const psum = (i: number, r: number, c: number) =>
+  idx.slice(0, r + 1).reduce((s, k) => s + A[i][k] * W[k][c], 0);
+// Token k steps along a row: k < 0 is still queued, 0..3 sits on the input of PE(r,k), 4 has left.
+const tokX = (k: number) => (k < 0 ? X0 - GX / 2 + k * QP : k < N ? px(k) - GX / 2 : px(N - 1) + SIZE + GX / 2);
+const C = idx.map((i) => idx.map((c) => psum(i, N - 1, c)));
+const harvested = (i: number, c: number, t: number) => t >= i + c + N - 1;
+const count = (t: number) => idx.reduce((s, i) => s + idx.filter((c) => harvested(i, c, t)).length, 0);
 ---
-<div class="blk array">
+<div class="blk array" data-systolic data-a={JSON.stringify(A)} data-w={JSON.stringify(W)}>
   <span class="inst">u_systolic_4x4</span>
-  <svg
-    viewBox="0 0 320 300"
-    role="img"
-    aria-label="4×4 weight-stationary systolic array 다이어그램. 활성값은 왼쪽에서 오른쪽으로, 부분합은 위에서 아래로 흐른다."
-    data-systolic
-  >
-    {idx.map((c) => (
-      <>
-        <line class="io" x1={px(c) + SIZE / 2} y1={18} x2={px(c) + SIZE / 2} y2={Y0 - 4} />
-        <text class="io-t" x={px(c) + SIZE / 2} y={13} text-anchor="middle">p{c}</text>
-        <line class="io" x1={px(c) + SIZE / 2} y1={bottom + 4} x2={px(c) + SIZE / 2} y2={bottom + 24} />
-        <text class="io-t" x={px(c) + SIZE / 2} y={bottom + 38} text-anchor="middle">y{c}</text>
-      </>
-    ))}
-    {idx.map((r) => (
-      <>
-        <line class="io" x1={22} y1={py(r) + SIZE / 2} x2={X0 - 4} y2={py(r) + SIZE / 2} />
-        <text class="io-t" x={6} y={py(r) + SIZE / 2 + 4}>a{r}</text>
-        {idx.map((c) => (
-          <>
-            {c < N - 1 && <line class="io" x1={px(c) + SIZE} y1={py(r) + SIZE / 2} x2={px(c + 1)} y2={py(r) + SIZE / 2} />}
-            {r < N - 1 && <line class="io" x1={px(c) + SIZE / 2} y1={py(r) + SIZE} x2={px(c) + SIZE / 2} y2={py(r + 1)} />}
-            <g class:list={['pe', { on: r + c === REST }]} data-d={r + c}>
-              <rect x={px(c)} y={py(r)} width={SIZE} height={SIZE} />
-              <text x={px(c) + SIZE / 2} y={py(r) + SIZE / 2 + 4} text-anchor="middle">W{r}{c}</text>
+  <div class="grid">
+    <div class="stage"><svg
+      viewBox={`0 0 ${VW} ${VH}`}
+      role="img"
+      aria-label="4×4 weight-stationary systolic array가 행렬 곱 C = A × W를 계산하는 모습. 입력 A는 행마다 한 클럭씩 늦게 왼쪽에서 들어가고, 부분합은 위에서 아래로 쌓여 맨 아래 행에서 결과가 나온다."
+    >
+      {idx.map((c) => (
+        <>
+          <line class="io" x1={px(c) + SIZE / 2} y1={18} x2={px(c) + SIZE / 2} y2={Y0} />
+          <text class="io-t" x={px(c) + SIZE / 2} y={12} text-anchor="middle">0</text>
+          <line class="io" x1={px(c) + SIZE / 2} y1={bottom} x2={px(c) + SIZE / 2} y2={bottom + 22} />
+          <text class="io-t" x={px(c) + SIZE / 2} y={bottom + 38} text-anchor="middle">y{c}</text>
+        </>
+      ))}
+      {idx.map((r) => (
+        <>
+          <text class="io-t" x={2} y={py(r) + SIZE / 2 + 4}>a{r}</text>
+          <line class="io" x1={24} y1={py(r) + SIZE / 2} x2={px(N - 1)} y2={py(r) + SIZE / 2} />
+          {idx.map((c) => {
+            const i = REST - r - c;
+            const on = i >= 0 && i < N;
+            return (
+              <>
+                {r < N - 1 && <line class="io" x1={px(c) + SIZE / 2} y1={py(r) + SIZE} x2={px(c) + SIZE / 2} y2={py(r + 1)} />}
+                <g class:list={['pe', { on }]} data-r={r} data-c={c}>
+                  <rect x={px(c)} y={py(r)} width={SIZE} height={SIZE} />
+                  <text class="w" x={px(c) + 6} y={py(r) + 14}>×{W[r][c]}</text>
+                  <text class="s" x={px(c) + SIZE / 2} y={py(r) + SIZE / 2 + 11} text-anchor="middle">{on ? psum(i, r, c) : ''}</text>
+                </g>
+              </>
+            );
+          })}
+        </>
+      ))}
+      {idx.map((r) =>
+        idx.map((i) => {
+          const k = REST - i - r;
+          return (
+            <g
+              class:list={['tok', { gone: k >= N }]}
+              data-r={r}
+              data-i={i}
+              style={`transform: translate(${tokX(k)}px, ${py(r) + SIZE / 2}px)`}
+            >
+              <rect x={-TOK / 2} y={-TOK / 2} width={TOK} height={TOK} />
+              <text y={4} text-anchor="middle">{A[i][r]}</text>
             </g>
-          </>
-        ))}
-      </>
-    ))}
-  </svg>
-  <div class="cap">
-    <span class="label">Weight-stationary · 4×4 PE</span>
-    <span class="label" data-cycle>cycle {REST}</span>
+          );
+        }),
+      )}
+    </svg></div>
+
+    <div class="side">
+      <div class="out">
+        <p class="label">C = A × W</p>
+        <table class="cm" aria-label="배열에서 꺼낸 결과 행렬 C">
+          <tbody>
+            {idx.map((i) => (
+              <tr>
+                {idx.map((c) => (
+                  <td class:list={{ new: REST === i + c + N - 1 }} data-i={i} data-c={c}>
+                    {harvested(i, c, REST) ? C[i][c] : ''}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="stat">
+          <span data-cycle>cycle {REST}</span>
+          <span data-count>{count(REST)} / 16</span>
+        </p>
+        <div class="ctl">
+          <button type="button" class="btn" data-play aria-pressed="false">Pause</button>
+          <button type="button" class="btn" data-step>Step</button>
+        </div>
+      </div>
+      <p class="note">
+        스터디에서 BRAM에 넣어 돌린 입력 A와 가중치 W입니다. A는 행마다 한 클럭씩 늦게 들어가고,
+        부분합은 아래로 내려가며 쌓입니다. 맨 아래 행에 닿은 값이 C의 한 칸입니다.
+      </p>
+      <dl class="fpga">
+        <div><dt>Board</dt><dd>PYNQ-Z2</dd></div>
+        <div><dt>Clock</dt><dd>100 MHz</dd></div>
+        <div><dt>LUT / FF</dt><dd>약 592 / 786</dd></div>
+        <div><dt>Golden</dt><dd>32 / 32 일치</dd></div>
+      </dl>
+      <a class="more" href="/projects/systolic-4x4/">4×4 Systolic Array NPU</a>
+    </div>
   </div>
 </div>
 
-<script is:inline>
+<script is:inline define:vars={{ N, LAST, X0, Y0, SIZE, GX, GY, QP }}>
   (function () {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    document.querySelectorAll('[data-systolic]').forEach(function (svg) {
-      var cells = svg.querySelectorAll('.pe');
-      var cap = svg.parentElement.querySelector('[data-cycle]');
-      var step = 3;
-      setInterval(function () {
-        step = (step + 1) % 8; // cycles 0..6 sweep the array, cycle 7 is idle
-        cells.forEach(function (g) { g.classList.toggle('on', Number(g.dataset.d) === step); });
-        if (cap) cap.textContent = 'cycle ' + step;
-      }, 650);
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var px = function (c) { return X0 + c * (SIZE + GX); };
+    var py = function (r) { return Y0 + r * (SIZE + GY); };
+    var tokX = function (k) {
+      return k < 0 ? X0 - GX / 2 + k * QP : k < N ? px(k) - GX / 2 : px(N - 1) + SIZE + GX / 2;
+    };
+    document.querySelectorAll('[data-systolic]').forEach(function (root) {
+      var A = JSON.parse(root.dataset.a), W = JSON.parse(root.dataset.w);
+      var psum = function (i, r, c) {
+        var s = 0;
+        for (var k = 0; k <= r; k++) s += A[i][k] * W[k][c];
+        return s;
+      };
+      var pes = root.querySelectorAll('.pe'), toks = root.querySelectorAll('.tok'), cells = root.querySelectorAll('.cm td');
+      var cyc = root.querySelector('[data-cycle]'), cnt = root.querySelector('[data-count]');
+      var play = root.querySelector('[data-play]'), stepBtn = root.querySelector('[data-step]');
+      var END = LAST + 2; // two idle cycles with the finished matrix before the run restarts
+      var t = 4, timer = null, running = !still, visible = true;
+
+      function draw(jump) {
+        root.classList.toggle('jump', !!jump);
+        pes.forEach(function (g) {
+          var r = +g.dataset.r, c = +g.dataset.c, i = t - r - c, on = i >= 0 && i < N;
+          g.classList.toggle('on', on);
+          g.querySelector('.s').textContent = on ? psum(i, r, c) : '';
+        });
+        toks.forEach(function (g) {
+          var r = +g.dataset.r, k = t - g.dataset.i - r;
+          g.style.transform = 'translate(' + tokX(k) + 'px,' + (py(r) + SIZE / 2) + 'px)';
+          g.classList.toggle('gone', k >= N);
+        });
+        var n = 0;
+        cells.forEach(function (td) {
+          var i = +td.dataset.i, c = +td.dataset.c, at = i + c + N - 1;
+          td.textContent = t >= at ? psum(i, N - 1, c) : '';
+          td.classList.toggle('new', t === at);
+          if (t >= at) n++;
+        });
+        cyc.textContent = t > LAST ? 'done' : 'cycle ' + t;
+        cnt.textContent = n + ' / 16';
+      }
+      function tick() {
+        var wrap = t >= END;
+        t = wrap ? 0 : t + 1;
+        draw(wrap);
+      }
+      function sync() {
+        var go = running && visible && !document.hidden;
+        if (go && !timer) timer = setInterval(tick, 900);
+        if (!go && timer) { clearInterval(timer); timer = null; }
+        play.textContent = running ? 'Pause' : 'Play';
+        play.setAttribute('aria-pressed', String(!running));
+      }
+      play.addEventListener('click', function () { running = !running; sync(); });
+      stepBtn.addEventListener('click', function () { running = false; sync(); tick(); });
+      document.addEventListener('visibilitychange', sync);
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (e) { visible = e[0].isIntersecting; sync(); }).observe(root);
+      }
+      sync();
     });
   })();
 </script>
 
 <style>
+  .array { padding: 32px 20px 24px; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: center; }
+  @media (min-width: 900px) {
+    .array { padding: 40px 36px 32px; }
+    .grid { grid-template-columns: minmax(0, 1fr) 300px; gap: 48px; }
+  }
   svg { width: 100%; height: auto; display: block; }
-  .cap { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-  .io { stroke: var(--muted); stroke-width: 1.2; fill: none; }
-  .io-t, .pe text { font-family: var(--font-mono); font-size: 11px; fill: var(--muted); }
-  .pe rect { fill: var(--block); stroke: var(--line-strong); stroke-width: 1.2; transition: fill 0.2s; }
+  /* Phone: crop the input queue so the array itself stays readable. */
+  @media (max-width: 559px) {
+    .array { padding: 28px 12px 20px; }
+    .stage { overflow: hidden; }
+    .stage svg { width: 143%; max-width: none; margin-left: -43%; }
+  }
+
+  .io { stroke: var(--line); stroke-width: 1.2; fill: none; }
+  .io-t { font-family: var(--font-mono); font-size: 11px; fill: var(--muted); }
+  .pe rect { fill: var(--block); stroke: var(--line-strong); stroke-width: 1.2; transition: fill 0.25s; }
+  .pe .w { font-family: var(--font-mono); font-size: 10.5px; fill: var(--muted); }
+  .pe .s { font-family: var(--font-mono); font-size: 17px; font-weight: 500; fill: var(--on-signal); font-variant-numeric: tabular-nums; }
   .pe.on rect { fill: var(--signal); }
-  .pe.on text { fill: var(--on-signal); }
+  .pe.on .w { fill: var(--on-signal); }
+
+  .tok { transition: transform 0.5s cubic-bezier(0.3, 0, 0.2, 1), opacity 0.3s; }
+  .tok rect { fill: var(--die); stroke: var(--line-strong); stroke-width: 1.2; }
+  .tok text { font-family: var(--font-mono); font-size: 12px; font-weight: 500; fill: var(--ink); }
+  .tok.gone { opacity: 0; }
+  .jump .tok { transition: none; }
+  @media (prefers-reduced-motion: reduce) { .tok, .pe rect { transition: none; } }
+
+  .side { display: grid; gap: 20px; min-width: 0; }
+  .out .label { margin: 0 0 10px; }
+  .cm { border-collapse: collapse; width: 100%; table-layout: fixed; }
+  .cm td {
+    border: 1px solid var(--line); height: 40px; text-align: center; background: var(--die);
+    font: 500 15px var(--font-mono); font-variant-numeric: tabular-nums; transition: background 0.4s;
+  }
+  .cm td.new { background: var(--signal); color: var(--on-signal); transition: none; }
+  .stat {
+    display: flex; justify-content: space-between; margin: 10px 0 0;
+    font: 12px var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+  }
+  .ctl { display: flex; gap: 8px; margin-top: 14px; }
+  .ctl .btn { font-size: 13px; padding: 7px 14px; min-width: 76px; }
+  .ctl .btn:hover { background: var(--die); }
+
+  .note { margin: 0; font-size: 14px; line-height: 1.65; color: var(--ink-2); text-wrap: pretty; }
+  .fpga { display: grid; grid-template-columns: 1fr 1fr; margin: 0; border-top: 1px solid var(--line); }
+  .fpga div { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .fpga dt { font: 11px var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .fpga dd { margin: 0; font: 500 14px var(--font-mono); }
+  .more { font: 14px var(--font-mono); justify-self: start; }
+
+  @media (min-width: 560px) and (max-width: 899px) {
+    .side { grid-template-columns: 1fr 1fr; column-gap: 28px; }
+    .out { grid-row: span 3; }
+  }
 </style>
