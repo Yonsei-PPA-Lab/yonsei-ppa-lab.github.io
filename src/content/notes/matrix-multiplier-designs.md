@@ -1,6 +1,6 @@
 ---
 title: 같은 2×2 행렬곱을 서로 다르게 구현하기
-date: 2026-11-15
+date: 2026-04-10
 tags: [RTL, Arch, Study]
 author: PPA Lab
 summary: 봄 스터디 제출물에 등장한 병렬 계산, 시간 분할 누적, 이웃 PE 간 전달 방식을 비교합니다.

@@ -1,6 +1,6 @@
 ---
 title: Weight-stationary systolic array에서 데이터는 어떻게 흐를까
-date: 2026-11-15
+date: 2026-05-08
 tags: [Arch, RTL]
 author: PPA Lab
 summary: 4×4 weight-stationary systolic array에서 활성값과 부분합이 움직이는 순서를 사이클 단위로 따라가 봅니다.
