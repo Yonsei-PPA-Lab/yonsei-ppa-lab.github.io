@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import SystolicArray from '../components/SystolicArray.astro';
 import ProjectTable from '../components/ProjectTable.astro';
 import NoteList from '../components/NoteList.astro';
+import AwardBadge from '../components/AwardBadge.astro';
 import { getProjects, getNotes } from '../lib/content';
 
 const projects = await getProjects();
@@ -10,12 +11,17 @@ const shown = projects.slice(0, 4);
 const notes = (await getNotes()).slice(0, 3);
 
 // Placed-and-routed layouts from the two contest designs. Numbers are the ones on each project page.
-const layouts = [
+type Layout = {
+  inst: string; href: string; img: string; w: number; h: number; kicker: string; title: string;
+  specs: string[][]; award?: { name: string; sponsor: string; logo?: string };
+};
+const layouts: Layout[] = [
   {
     inst: 'u_rot_event_mapper',
     href: '/projects/event-world-mapper/',
     img: '/projects/event-world-mapper/layout.png', w: 900, h: 891,
-    kicker: '반도체 YAHO~ · 산학협력상 · GPDK045',
+    kicker: '반도체 YAHO~ · GPDK045',
+    award: { name: '산학협력상', sponsor: 'Cadence', logo: '/cadence-logo.png' },
     title: '저전력 이벤트 → 월드 매퍼',
     specs: [['Clock', '2.90 ns'], ['Cell area', '7,662 µm²'], ['Energy', '1.38 pJ/event']],
   },
@@ -62,6 +68,7 @@ const layouts = [
             <figcaption>
               <span class="label">{l.kicker}</span>
               <a class="ttl" href={l.href}>{l.title}</a>
+              {l.award && <div class="lay-award"><AwardBadge name={l.award.name} sponsor={l.award.sponsor} logo={l.award.logo} /></div>}
               <dl>
                 {l.specs.map(([k, v]) => (
                   <div><dt>{k}</dt><dd>{v}</dd></div>
@@ -111,6 +118,7 @@ const layouts = [
   .lay .label { display: block; margin-bottom: 6px; }
   .ttl { display: block; font-weight: 600; line-height: 1.45; text-decoration-color: transparent; }
   .ttl:hover { text-decoration-color: var(--signal); }
+  .lay-award { margin-top: 10px; }
   .lay dl { margin: 14px 0 0; border-top: 1px solid var(--line); }
   .lay dl div { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px solid var(--line); }
   .lay dt { font: 11px/1.9 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }

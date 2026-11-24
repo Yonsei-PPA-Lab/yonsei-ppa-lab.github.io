@@ -16,6 +16,7 @@ const projects = defineCollection({
     repo: z.string().url().optional(),
     contributors: z.array(z.object({ name: z.string(), role: z.string() })).default([]),
     order: z.number().default(100),
+    award: z.object({ name: z.string(), sponsor: z.string(), logo: z.string().optional() }).optional(), // e.g. { name: 산학협력상, sponsor: Cadence }
   }),
 });
 

@@ -1,0 +1,27 @@
+---
+// Award line: a small "수상" chip, a medal icon, the award name, then the sponsor's logo.
+// logo: path under /public to the sponsor's logo (SVG or transparent PNG). Cadence rules: whole logo with ®, at least 1 inch wide (TAK chose a smaller size), clear space = logo height, black on light / white on dark, not inside a sentence.
+interface Props { name: string; sponsor: string; logo?: string }
+const { name, sponsor, logo } = Astro.props;
+---
+<span class="award">
+  <span class="main">
+    <span class="won">수상</span>
+    <Fragment set:html={`<svg class="mark" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>`} />
+    <span class="txt">{name}{!logo && <span class="sp"> · {sponsor}</span>}</span>
+  </span>
+  {logo && <span class="logo" role="img" aria-label={sponsor} style={`--logo: url(${logo})`}></span>}
+</span>
+
+<style>
+  .award { display: inline-flex; align-items: center; gap: 7px; max-width: 100%; color: var(--ink); font-size: 13px; line-height: 1.4; }
+  .won { flex: none; padding: 1px 6px; border-radius: var(--radius-chip); background: var(--signal); color: var(--on-signal); font: 600 10px/1.5 var(--font-body); }
+  .award :global(.mark) { flex: none; width: 14px; height: 14px; color: var(--ink-2); }
+  .award { flex-wrap: wrap; row-gap: 10px; }
+  .main { display: inline-flex; align-items: center; gap: 7px; min-width: 0; }
+  .logo { flex: none; display: inline-block; height: 12px; aspect-ratio: 400 / 76; margin-left: 8px; background: #000; -webkit-mask: var(--logo) center / contain no-repeat; mask: var(--logo) center / contain no-repeat; }
+  :global(:root[data-theme="dark"]) .logo { background: #fff; }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light'])) .logo { background: #fff; } }
+  .sp { color: var(--ink-2); }
+  @media (max-width: 560px) { .main { flex-basis: 100%; } .logo { margin-left: 0; } }
+</style>
