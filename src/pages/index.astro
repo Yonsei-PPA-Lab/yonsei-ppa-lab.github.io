@@ -13,7 +13,7 @@ const notes = (await getNotes()).slice(0, 3);
 // Placed-and-routed layouts from the two contest designs. Numbers are the ones on each project page.
 type Layout = {
   inst: string; href: string; img: string; w: number; h: number; kicker: string; title: string;
-  specs: string[][]; award?: { name: string; sponsor: string };
+  specs: string[][]; award?: { name: string; sponsor: string; logo?: string };
 };
 const layouts: Layout[] = [
   {
@@ -68,7 +68,7 @@ const layouts: Layout[] = [
             <figcaption>
               <span class="label">{l.kicker}</span>
               <a class="ttl" href={l.href}>{l.title}</a>
-              {l.award && <div class="lay-award"><AwardBadge size="sm" name={l.award.name} sponsor={l.award.sponsor} /></div>}
+              {l.award && <div class="lay-award"><AwardBadge name={l.award.name} sponsor={l.award.sponsor} logo={l.award.logo} /></div>}
               <dl>
                 {l.specs.map(([k, v]) => (
                   <div><dt>{k}</dt><dd>{v}</dd></div>

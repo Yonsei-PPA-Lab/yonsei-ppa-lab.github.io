@@ -22,7 +22,7 @@ const { Content } = await render(project);
       <span class="label"><a href="/projects/">projects</a> / {project.id}</span>
       <h1>{d.title}</h1>
       <p>{d.summary}</p>
-      {d.award && <div class="award-row"><AwardBadge name={d.award.name} sponsor={d.award.sponsor} /></div>}
+      {d.award && <div class="award-row"><AwardBadge name={d.award.name} sponsor={d.award.sponsor} logo={d.award.logo} /></div>}
     </header>
 
     <div class="layout">
