@@ -1,0 +1,27 @@
+---
+// Award pin: the prize name on the left, the sponsor on a signal-yellow pad on the right.
+interface Props { name: string; sponsor: string; size?: 'sm' | 'md' }
+const { name, sponsor, size = 'md' } = Astro.props;
+---
+<span class:list={['award', size]}>
+  <span class="nm">{name}</span>
+  <span class="sp">{sponsor}</span>
+</span>
+
+<style>
+  .award {
+    display: inline-flex; align-items: stretch; max-width: 100%;
+    border: 1px solid var(--line-strong); border-radius: var(--radius-chip);
+    vertical-align: middle; line-height: 1; white-space: nowrap;
+  }
+  .nm { display: flex; align-items: center; padding: 8px 12px; background: var(--block); color: var(--ink); font: 600 14px/1 var(--font-body); }
+  .sp {
+    display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+    border-left: 1px solid var(--line-strong); background: var(--signal); color: var(--on-signal);
+    font: 700 13px/1 var(--font-display); font-stretch: 125%; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .sp::before { content: ''; width: 6px; height: 6px; background: currentColor; flex: none; }
+  .sm .nm { padding: 6px 9px; font-size: 12px; }
+  .sm .sp { padding: 6px 9px; gap: 6px; font-size: 11px; letter-spacing: 0.14em; }
+  .sm .sp::before { width: 5px; height: 5px; }
+</style>

@@ -6,6 +6,7 @@ status: done
 start: "2026-09"
 end: "2026-10"
 order: 1
+award: { name: 산학협력상, sponsor: Cadence }
 contributors:
   - { name: 공민석, role: 팀장 }
   - { name: 탁효빈, role: 팀원 }
