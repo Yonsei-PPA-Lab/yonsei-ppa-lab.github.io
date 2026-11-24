@@ -1,6 +1,6 @@
 ---
 // Award line: a small "수상" chip, a medal icon, the award name, then the sponsor's logo.
-// logo: path under /public to the sponsor's logo (SVG or transparent PNG). Cadence rules: whole logo with ®, at least 1 inch wide, clear space = logo height, black on light / white on dark, not inside a sentence.
+// logo: path under /public to the sponsor's logo (SVG or transparent PNG). Cadence rules: whole logo with ®, at least 1 inch wide (TAK chose a smaller size), clear space = logo height, black on light / white on dark, not inside a sentence.
 interface Props { name: string; sponsor: string; logo?: string }
 const { name, sponsor, logo } = Astro.props;
 ---
@@ -14,12 +14,12 @@ const { name, sponsor, logo } = Astro.props;
 </span>
 
 <style>
-  .award { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; color: var(--ink); font-size: var(--fs-small); line-height: 1.4; }
-  .won { flex: none; padding: 2px 7px; border-radius: var(--radius-chip); background: var(--signal); color: var(--on-signal); font: 600 12px/1.5 var(--font-body); }
-  .award :global(.mark) { flex: none; width: 18px; height: 18px; color: var(--ink-2); }
+  .award { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; color: var(--ink); font-size: 14px; line-height: 1.4; }
+  .won { flex: none; padding: 1px 6px; border-radius: var(--radius-chip); background: var(--signal); color: var(--on-signal); font: 600 11px/1.5 var(--font-body); }
+  .award :global(.mark) { flex: none; width: 16px; height: 16px; color: var(--ink-2); }
   .award { flex-wrap: wrap; row-gap: 10px; }
-  .main { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
-  .logo { flex: none; display: inline-block; height: 20px; aspect-ratio: 400 / 76; margin-left: 14px; background: #000; -webkit-mask: var(--logo) center / contain no-repeat; mask: var(--logo) center / contain no-repeat; }
+  .main { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+  .logo { flex: none; display: inline-block; height: 15px; aspect-ratio: 400 / 76; margin-left: 10px; background: #000; -webkit-mask: var(--logo) center / contain no-repeat; mask: var(--logo) center / contain no-repeat; }
   :global(:root[data-theme="dark"]) .logo { background: #fff; }
   @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light'])) .logo { background: #fff; } }
   .sp { color: var(--ink-2); }
