@@ -19,7 +19,7 @@ const { name, sponsor, logo } = Astro.props;
   .award :global(.mark) { flex: none; width: 14px; height: 14px; color: var(--ink-2); }
   .award { flex-wrap: wrap; row-gap: 10px; }
   .main { display: inline-flex; align-items: center; gap: 7px; min-width: 0; }
-  .logo { flex: none; display: inline-block; height: 12px; aspect-ratio: 400 / 76; margin-left: 8px; background: #000; -webkit-mask: var(--logo) center / contain no-repeat; mask: var(--logo) center / contain no-repeat; }
+  .logo { flex: none; display: inline-block; height: 12px; aspect-ratio: 400 / 75; margin-left: 8px; background: #000; -webkit-mask: var(--logo) center / contain no-repeat; mask: var(--logo) center / contain no-repeat; }
   :global(:root[data-theme="dark"]) .logo { background: #fff; }
   @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light'])) .logo { background: #fff; } }
   .sp { color: var(--ink-2); }
